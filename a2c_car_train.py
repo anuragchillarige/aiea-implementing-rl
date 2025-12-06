@@ -148,13 +148,13 @@ if __name__ == "__main__":
         
         if update % 10 == 0:
             if len(finished_games_buffer) > 0:
-                avg_score = np.mean(finished_games_buffer[-10:]) # get the average score from the buffer
+                avg_score = np.mean(finished_games_buffer[-100:]) # get the average score from the buffer
             else:
                 avg_score = 0.0 # edge case where games are not finished (usually only happens at the start )
             
             print(f"Step {global_step} | Loss: {loss.item():.4f} | Avg Total Score: {avg_score:.2f}")
             
-            
+            writer.add_scalar("Charts/Mean_Episode_Reward", avg_score, global_step)
             writer.add_scalar("Loss/Total", loss.item(), global_step)
 
     torch.save(agent.state_dict(), "a2c_carracing_weights.pth") # save the model to use in the test script
